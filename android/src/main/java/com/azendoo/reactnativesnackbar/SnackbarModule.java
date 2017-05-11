@@ -72,7 +72,13 @@ public class SnackbarModule extends ReactContextBaseJavaModule{
         String title = options.hasKey("title") ? options.getString("title") : "Hello";
         int duration = options.hasKey("duration") ? options.getInt("duration") : Snackbar.LENGTH_SHORT;
 
-        Snackbar snackbar = Snackbar.make(view, title, duration);
+        Snackbar snackbar;
+        // For older devices, explicitly set the text color; otherwise it may appear dark gray.
+	       if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+		         snackbar = Snackbar.make(view,Html.fromHtml("<font color=\"#ffffff\">"+title+"</font>"), duration);
+	          }else{
+		            snackbar = Snackbar.make(view, title, duration);
+	          }
 
         // Set the background color.
         if (options.hasKey("backgroundColor")) {
@@ -91,15 +97,6 @@ public class SnackbarModule extends ReactContextBaseJavaModule{
             snackbar.setAction(actionDetails.getString("title"), onClickListener);
             snackbar.setActionTextColor(actionDetails.getInt("color"));
         }
-
-        // For older devices, explicitly set the text color; otherwise it may appear dark gray.
-        // http://stackoverflow.com/a/31084530/763231
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            View snackbarView = snackbar.getView();
-            TextView snackbarText = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-            snackbarText.setTextColor(Color.WHITE);
-        }
-
         snackbar.show();
     }
 
