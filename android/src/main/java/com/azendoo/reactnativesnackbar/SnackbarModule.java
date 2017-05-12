@@ -16,6 +16,7 @@ import com.facebook.react.bridge.ReadableMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import android.text.Html;
 
 public class SnackbarModule extends ReactContextBaseJavaModule{
 
